@@ -1,0 +1,103 @@
+<?php
+
+namespace App\Repository;
+
+use App\Entity\Activites;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Persistence\ManagerRegistry;
+
+/**
+ * @extends ServiceEntityRepository<Activites>
+ *
+ * @method Activites|null find($id, $lockMode = null, $lockVersion = null)
+ * @method Activites|null findOneBy(array $criteria, array $orderBy = null)
+ * @method Activites[]    findAll()
+ * @method Activites[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ */
+class ActivitesRepository extends ServiceEntityRepository
+{
+    public function __construct(ManagerRegistry $registry)
+    {
+        parent::__construct($registry, Activites::class);
+    }
+
+//    /**
+//     * @return Activites[] Returns an array of Activites objects
+//     */
+//    public function findByExampleField($value): array
+//    {
+//        return $this->createQueryBuilder('a')
+//            ->andWhere('a.exampleField = :val')
+//            ->setParameter('val', $value)
+//            ->orderBy('a.id', 'ASC')
+//            ->setMaxResults(10)
+//            ->getQuery()
+//            ->getResult()
+//        ;
+//    }
+
+//    public function findOneBySomeField($value): ?Activites
+//    {
+//        return $this->createQueryBuilder('a')
+//            ->andWhere('a.exampleField = :val')
+//            ->setParameter('val', $value)
+//            ->getQuery()
+//            ->getOneOrNullResult()
+//        ;
+//    }
+
+
+
+public function findAllSortedBy(string $criteria): array
+{
+    $results = $this->createQueryBuilder('u')
+        ->orderBy('u.' . $criteria, 'ASC')
+        ->getQuery()
+        ->getResult();
+
+    if ($criteria === 'prixAct') {
+        // Custom sort function to cast 'prixAct' as a decimal
+        usort($results, function ($a, $b) {
+            return floatval($a->getPrixAct()) - floatval($b->getPrixAct());
+        });
+    }
+    
+
+    return $results;
+}
+public function getActivityCountByPlace(): array
+    {
+        $queryBuilder = $this->createQueryBuilder('a')
+            ->select('a.lieuAct, COUNT(a.idAct) as activityCount')
+            ->groupBy('a.lieuAct');
+
+        $results = $queryBuilder->getQuery()->getResult();
+
+        $countsByPlace = [];
+        foreach ($results as $result) {
+            $countsByPlace[$result['lieuAct']] = $result['activityCount'];
+        }
+
+        return $countsByPlace;
+    }
+
+    public function getActivityCountByorg(): array
+    {
+        $queryBuilder = $this->createQueryBuilder('a')
+            ->select('a.organisateur, COUNT(a.idAct) as activityCount')
+            ->groupBy('a.organisateur');
+
+        $results = $queryBuilder->getQuery()->getResult();
+
+        $countsByorg = [];
+        foreach ($results as $result) {
+            $countsByorg[$result['organisateur']] = $result['activityCount'];
+        }
+
+        return $countsByorg;
+    }
+
+
+
+
+}

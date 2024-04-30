@@ -1,0 +1,13 @@
+{% extends 'utilisateur/base.html.twig' %}
+
+{% block title %}Edit Channel{% endblock %}
+
+{% block container %}
+    <h1>Edit Channel</h1>
+
+    {{ include('channel/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('app_channel_index') }}">back to list channels </a>
+
+    {{ include('channel/_delete_form.html.twig') }}
+{% endblock %}

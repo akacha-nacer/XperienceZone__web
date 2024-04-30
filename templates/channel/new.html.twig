@@ -1,0 +1,25 @@
+{% extends 'utilisateur/base.html.twig' %}
+{% block container %}
+    <div class="container">
+        <h1>Create new Forum </h1>
+
+        <div class="content-container">
+            {{ include('channel/_form.html.twig') }}
+        </div>
+
+        <div class="back-link">
+            <a href="{{ path('app_channel_index') }}">Back to List</a>
+        </div>
+    </div>
+
+    <style>
+        .container {
+            text-align: center; 
+        }
+
+        .content-container {
+            max-width: 500px; 
+            margin: 100 auto; 
+        }
+    </style>
+{% endblock %}

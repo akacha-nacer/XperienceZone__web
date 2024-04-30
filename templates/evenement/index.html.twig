@@ -1,0 +1,138 @@
+{% extends 'base.html.twig' %}
+
+
+{% block title %}
+	Evenement
+{% endblock %}
+{% block container %}
+
+	<div class="search-and-create-container">
+		<div class="welcome-hero-search-box">
+			<form action="{{ path('app_evenement_index') }}" method="get">
+				<label for="searchTerm">search :</label>
+				<input type="text" id="searchTerm" name="searchTerm" placeholder="Entrez votre recherche" value="{{ searchTerm }}">
+				<button type="submit">search</button>
+			</form>
+		</div>
+		<a href="{{ path('app_evenement_new') }}" class="btn btn-primary">Create new Event</a>
+		{# Afficher la notification Flash le cas échéant #}
+		{% for flashMessage in app.flashes('success') %}
+			<div class="alert alert-success">
+				{{ flashMessage }}
+			</div>
+		{% endfor %}
+	{% endblock %}
+	{% block explore %}
+
+		<div id="cardSection" class="section-header">
+			<h2>explore</h2>
+
+			<p>Creating unforgettable experiences, One event at a Time</p>
+			<div class="mb-3"></div>
+		</div>
+
+	{% endblock %}
+
+	{% block card %}
+		{# Afficher la notification Flash le cas échéant #}
+		{% for flashMessage in app.flashes('success') %}
+			<div class="alert alert-success">
+				{{ flashMessage }}
+			</div>
+		{% endfor %}
+		<div class="row">
+			{% for evenement in evenements %}
+				<div class="col-md-4 col-sm-6">
+					<div class="single-explore-item">
+						<div class="single-explore-img">
+							<img
+							src="{{ asset('uploads/images/' ~ evenement.image) }}" alt="event image">
+							<!-- Other content for events -->
+
+							<div class="single-explore-img-info">
+								<button onclick="window.location.href='#'">best rated</button>
+								<div class="single-explore-image-icon-box">
+									<ul>
+										<li>
+											<div class="single-explore-image-icon">
+												<a href="{{ path('app_evenement_show', {'idEvent': evenement.idEvent}) }}">
+													<i class="fa fa-arrows-alt"></i>
+												</a>
+
+											</div>
+										</li>
+										<li>
+											<div class="single-explore-image-icon">
+												<a href="{{ path('app_evenement_edit', {'idEvent': evenement.idEvent}) }}">
+													<i class="fa fa-bookmark-o"></i>
+												</a>
+											</div>
+										</li>
+									</ul>
+								</div>
+							</div>
+						</div>
+						<div class="single-explore-txt bg-theme-1">
+							<h2>
+								<a href="#">{{ evenement.nomEvent }}</a>
+							</h2>
+							<!-- Other content for event -->
+							<p class="explore-rating-price">
+								<span class="explore-rating">E</span>
+								<a href="#">
+									{{evenement.lieuEvent }}</a>
+								<span class="explore-price-box">
+									Nb participants
+									<span class="explore-price">{{ evenement.nbParticipants }}</span>
+								</span>
+								<a href="#">{{ evenement.organisateur }}</a>
+							</p>
+
+							<div class="explore-person">
+								<div class="row">
+									<div class="col-sm-10">
+										<p>
+											{{ evenement.descript }}...
+										</p>
+									</div>
+								</div>
+							</div>
+
+							<div class="explore-open-close-part">
+								<div class="row">
+									<div class="col-sm-5">
+										<a href="{{ path('app_ticket_new', {'idEvent': evenement.idEvent}) }}">Réserver</a>
+									</div>
+									<div class="col-sm-7">
+										<div class="explore-map-icon">
+											<a href="#">
+												<i data-feather="map-pin"></i>
+											</a>
+											<a href="#">
+												<i data-feather="upload"></i>
+											</a>
+											<a href="#">
+												<i data-feather="heart"></i>
+											</a>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			{% endfor %}
+		</div>
+		<div class="pagination">
+			{{ knp_pagination_render(evenements) }}
+		</div>
+		<style>
+			/* Pagination container */
+			.pagination {
+				display: flex;
+				justify-content: center;
+				margin-top: 20px;
+			}
+		</style>
+
+	{% endblock %}

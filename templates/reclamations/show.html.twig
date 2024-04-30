@@ -1,0 +1,38 @@
+{% extends 'utilisateur/base.html.twig' %}
+
+{% block title %}Reclamations{% endblock %}
+
+{% block container %}
+    <h1>Reclamations</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Idr</th>
+                <td>{{ reclamation.idr }}</td>
+            </tr>
+            <tr>
+                <th>Daterec</th>
+                <td>{{ reclamation.daterec ? reclamation.daterec|date('Y-m-d') : '' }}</td>
+            </tr>
+            <tr>
+                <th>Typerec</th>
+                <td>{{ reclamation.typerec }}</td>
+            </tr>
+            <tr>
+                <th>Refobject</th>
+                <td>{{ reclamation.refobject }}</td>
+            </tr>
+             <tr>
+                <th>Details</th>
+                <td>{{ reclamation.details }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_reclamations_index') }}" class="btn">back to list</a>
+
+    <a href="{{ path('app_reclamations_edit', {'idr': reclamation.idr}) }}" class="btn">edit</a>
+
+    {{ include('reclamations/_delete_form.html.twig') }}
+{% endblock %}

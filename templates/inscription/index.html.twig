@@ -1,0 +1,44 @@
+{% block title %}Inscription index
+{% endblock %}
+
+{% block container %}
+	<h4>Inscription List</h4>
+
+	<table class="table">
+		<thead>
+			<tr>
+
+				<th>DateIns</th>
+				<th>HeureIns</th>
+				<th>NbrTickes</th>
+				<th>FraitAbonnement</th>
+				<th>ActiviteId</th>
+				<th>UserId</th>
+				<th>actions</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for inscription in inscriptions %}
+				<tr>
+
+					<td>{{ inscription.dateIns ? inscription.dateIns|date('Y-m-d') : '' }}</td>
+					<td>{{ inscription.heureIns ? inscription.heureIns|date('H:i') : '' }}</td>
+					<td>{{ inscription.nbrTickes }}</td>
+					<td>{{ inscription.fraitAbonnement }}</td>
+					<td>{{ inscription.activite.getIdAct() }}</td>
+					<td>{{ inscription.userId }}</td>
+					<td>
+						<a href="{{ path('app_inscription_show', {'Id_ins': inscription.Idins}) }}">show</a>
+						<a href="{{ path('app_inscription_edit', {'Id_ins': inscription.Idins}) }}">edit</a>
+					</td>
+				</tr>
+			{% else %}
+				<tr>
+					<td colspan="8">no records found</td>
+				</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+
+
+{% endblock %}
